@@ -13,6 +13,7 @@ export class FormComponent implements OnInit {
     // ngFor binds data to this var
     public client: Client = new Client();
     public title: String = 'Create client';
+    public errors: string[] = [];
 
     constructor(
         private clientService: ClientService,
@@ -36,16 +37,26 @@ export class FormComponent implements OnInit {
         this.clientService.update(this.client).subscribe( 
             response => {
                 this.router.navigate(['/clients']);
-                swal.fire('Updated client', `Client ${response.name} updated successfully`, 'success');
+                swal.fire('Updated client', `Client ${response.data.name} updated successfully`, 'success');
+            },
+            err => {
+                this.errors = err.error.errors as string[]
+                console.error('Status code from backend: ' + err.status);
+                console.error(err.error.errors);
             }
         )
     }
 
-    public create(): void {
+    create(): void {
         this.clientService.create(this.client).subscribe(
             response => {
                 this.router.navigate(['/clients']);
                 swal.fire('New Client', `Client ${response.name} created successfully`, 'success');
+            },
+            err => {
+                this.errors = err.error.errors as string[]
+                console.error('Status code from backend: ' + err.status);
+                console.error(err.error.errors);
             }
         )
     }

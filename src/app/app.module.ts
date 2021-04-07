@@ -10,6 +10,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { DirectiveComponent } from './directive/directive.component';
 import { ClientsComponent } from './clients/clients.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 import { FormComponent } from './clients/form.component'
 import { ClientService } from './clients/client.service';
 
@@ -17,6 +18,7 @@ import { ClientService } from './clients/client.service';
 const routes: Routes = [
     { path: '', redirectTo: 'clients', pathMatch: 'full' },
     { path: 'clients', component: ClientsComponent },
+    { path: 'clients/page/:page', component: ClientsComponent },
     { path: 'clients/form', component: FormComponent },
     { path: 'clients/form/:id', component: FormComponent },
     { path: 'directives', component: DirectiveComponent }
@@ -29,7 +31,8 @@ const routes: Routes = [
         FooterComponent,
         DirectiveComponent,
         ClientsComponent,
-        FormComponent
+        FormComponent,
+        PaginatorComponent
     ],
     imports: [
         BrowserModule,
