@@ -3,7 +3,7 @@ import { formatDate, DatePipe } from '@angular/common';
 import { CLIENTS } from './clients.json';
 import { Client } from './client';
 import { Observable, of, throwError } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
@@ -33,7 +33,7 @@ export class ClientService {
             tap((response: any) => {
                 (response.content as Client[]).forEach(client => {
                     // we can send it to kibana here for example
-                    console.log(client.name);
+                    // console.log(client.name);
                 })
             }),
             map((response: any) => {
@@ -95,5 +95,18 @@ export class ClientService {
                 return throwError(e);
             })
         );
+    }
+
+
+    uploadImage(file: File, id: any): Observable<HttpEvent<{}>> {
+        let formData = new FormData();
+        formData.append("file", file);
+        formData.append("id", id);
+
+        const request = new HttpRequest('POST', `${this.urlEndpoint}/upload`, formData, {
+            reportProgress: true
+        });
+
+        return this.http.request(request);
     }
 }

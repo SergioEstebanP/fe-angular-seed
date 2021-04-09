@@ -19,17 +19,19 @@
           <th>surname</th>
           <th>email</th>
           <th>date</th>
+          <th>next view</th>
           <th>edit</th>
           <th>delete</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let client of clients">
-          <td>{{ client.id }}</td>
+          <td><button type="button" [routerLink]="['/clients/see', client.id]" class="btn btn-success">{{ client.id }}</button></td>
           <td>{{ client.name }}</td>
           <td>{{ client.surname }}</td>
           <td>{{ client.email }}</td>
           <td>{{ client.createdAt}}</td>
+          <td>{{ client.nextView}}</td>
           <td>
               <button type="button" name="editar" [routerLink] = "['/clients/form', client.id]" class="btn btn-primary">Edit</button>
           </td>

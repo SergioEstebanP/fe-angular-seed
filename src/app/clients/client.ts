@@ -3,5 +3,7 @@ export class Client {
   name: string | undefined;
   surname: string | undefined;
   createdAt: string | undefined;
+  nextView: string | undefined;
   email: string | undefined;
+  picture: string | undefined;
 }

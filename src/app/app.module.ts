@@ -13,6 +13,8 @@ import { ClientsComponent } from './clients/clients.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { FormComponent } from './clients/form.component'
 import { ClientService } from './clients/client.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DetailsComponent } from './clients/details/details.component';
 
 
 const routes: Routes = [
@@ -21,6 +23,7 @@ const routes: Routes = [
     { path: 'clients/page/:page', component: ClientsComponent },
     { path: 'clients/form', component: FormComponent },
     { path: 'clients/form/:id', component: FormComponent },
+    { path: 'clients/see/:id', component: DetailsComponent },
     { path: 'directives', component: DirectiveComponent }
 ]
 
@@ -32,13 +35,15 @@ const routes: Routes = [
         DirectiveComponent,
         ClientsComponent,
         FormComponent,
-        PaginatorComponent
+        PaginatorComponent,
+        DetailsComponent
     ],
     imports: [
         BrowserModule,
         HttpClientModule,
         FormsModule,
-        RouterModule.forRoot(routes)
+        RouterModule.forRoot(routes),
+        BrowserAnimationsModule
     ],
     providers: [ClientService],
     bootstrap: [AppComponent]

@@ -37,6 +37,7 @@ export class FormComponent implements OnInit {
         this.clientService.update(this.client).subscribe( 
             response => {
                 this.router.navigate(['/clients']);
+                console.log(this.client);
                 swal.fire('Updated client', `Client ${response.data.name} updated successfully`, 'success');
             },
             err => {
@@ -60,5 +61,4 @@ export class FormComponent implements OnInit {
             }
         )
     }
-
 }

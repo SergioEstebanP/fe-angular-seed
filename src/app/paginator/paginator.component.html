@@ -1,5 +1,5 @@
-<ul *ngIf="pages!.length > 0" class="pagination">
-
+<!-- <ul *ngIf="pages!.length > 0" class="pagination" style="overflow:scroll;"> -->
+<ul *ngIf="pages!.length > 0" class="pagination" >
 
     <li class="page-item" *ngIf="paginator.number > 0">
         <a class="page-link" [routerLink]="['/clients/page', paginator.number-1]">&laquo;</a>
