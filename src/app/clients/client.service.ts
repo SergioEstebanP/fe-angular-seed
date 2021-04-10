@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 
 import { Router } from '@angular/router';
 import { ClientsComponent } from './clients.component';
+import { Region } from './region';
 
 @Injectable({
     providedIn: 'root'
@@ -108,5 +109,9 @@ export class ClientService {
         });
 
         return this.http.request(request);
+    }
+
+    getRegions(): Observable<Region[]> {
+        return this.http.get<Region[]>(this.urlEndpoint + '/regions');
     }
 }

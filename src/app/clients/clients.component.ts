@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Client } from './client';
 import { ClientService } from './client.service';
+import { ModalService } from './details/modal.service';
 import Swal from 'sweetalert2';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -14,9 +15,11 @@ export class ClientsComponent implements OnInit {
 
     public clients: Client[] = [];
     public paginator: any;
+    public selectedClient: Client = new Client();
 
     constructor(
         private clientService: ClientService,
+        private modalService: ModalService,
         private activatedRoute: ActivatedRoute
     ) { }
 
@@ -28,12 +31,22 @@ export class ClientsComponent implements OnInit {
             }
             this.clientService.getClients(page).pipe(
                 tap(response => {
+                    // we can log to kibana
                     // console.log(response);
-                    (response.content as Client[]).forEach(client => console.log("Client: " + client.name));
+                    // (response.content as Client[]).forEach(client => console.log("Client: " + client.name));
                 })
             ).subscribe(response => {
                 this.clients = response.content as Client[]
                 this.paginator = response;
+            });
+        });
+
+        this.modalService.uploadNotification.subscribe((client: { id: number; picture: string | undefined; }) => {
+            this.clients = this.clients.map(originalClient => {
+                if (client.id == originalClient.id) {
+                    originalClient.picture = client.picture;
+                }
+                return originalClient;
             });
         });
     }
@@ -69,5 +82,11 @@ export class ClientsComponent implements OnInit {
                 )
             }
         })
+    }
+
+    openModal(client: Client) {
+        this.selectedClient = client;
+        // console.log('Client Component OK');
+        this.modalService.openModal();
     }
 }

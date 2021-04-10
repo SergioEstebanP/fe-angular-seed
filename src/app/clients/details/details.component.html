@@ -1,51 +1,65 @@
-<div class="card bg-dark text-white">
-
-    <div class="card-header"> {{ title }} </div>
-    <div class="card-body">
-
-        <div class="container">
-            <!-- row 1 -->
-            <div class="row">
-
-                <!-- row 1 col 1 -->
-                <div class="col-sm">
-
-                    <ul class="list-group text-dark mb-3">
-                        <li class="list-group-item">{{ client.name }}</li>
-                        <li class="list-group-item">{{ client.surname }}</li>
-                        <li class="list-group-item">{{ client.email }}</li>
-                        <li class="list-group-item">{{ client.createdAt }}</li>
-                    </ul>
-
-                    <div class="input-group mb-3">
-                        <div class="custom-file">
-                            <input (change)="selectImage($event)" class="custom-file-input" type="file" id="formFile">
-                            <label class="custom-file-label" for="inputGroupFile04">Upload Image</label>
-                        </div>
-                        <div class="input-group-append">
-                            <button (click)="uploadImage()" [disabled]="!selectedImage"
-                                class="btn btn-outline-secondary" type="button">Upload</button>
-                        </div>
-                    </div>
-
-                    <!-- Progress Bar -->
-                    <div *ngIf="progressBar > 0" class="progress" style="height: 30px;">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                            attr.aria-valuenow="{{progressBar}}" aria-valuemin="0" aria-valuemax="100"
-                            [ngStyle]="{width:progressBar+'%'}">
-                            {{ progressBar }}
-                        </div>
-                    </div>
-
+<!-- Modal -->
+<div class="open-modal modal-animation fadeIn" *ngIf="modalService.modal">
+    <div style="display: block;" class="modal" role="dialog" id="exampleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
+                    <button type="button" (click)="closeModal()" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <!-- row 1 -->
+                        <div class="row">
 
-                <!-- row 1 col 2 -->
-                <div class="col-sm">
-                    <img *ngIf="client?.picture" src="http://localhost:8080/api/images/{{client.picture}}"
-                        alt="profile picture" class="img-thumbnail rounded">
+                            <!-- row 1 col 1 -->
+                            <div class="col-sm">
+
+                                <ul class="list-group text-dark mb-3">
+                                    <li class="list-group-item">{{ client!.name }}</li>
+                                    <li class="list-group-item">{{ client!.surname }}</li>
+                                    <li class="list-group-item">{{ client!.email }}</li>
+                                    <li class="list-group-item">{{ client!.region!.name }}</li>
+                                    <li class="list-group-item">{{ client!.createdAt }}</li>
+                                </ul>
+
+                                <div class="input-group mb-3">
+                                    <div class="custom-file">
+                                        <input (change)="selectImage($event)" class="custom-file-input" type="file"
+                                            id="formFile">
+                                        <label class="custom-file-label" for="inputGroupFile04">Upload Image</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button (click)="uploadImage()" [disabled]="!selectedImage"
+                                            class="btn btn-outline-secondary" type="button">Upload</button>
+                                    </div>
+                                </div>
+
+                                <!-- Progress Bar -->
+                                <div *ngIf="progressBar > 0" class="progress" style="height: 30px;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                        role="progressbar" attr.aria-valuenow="{{progressBar}}" aria-valuemin="0"
+                                        aria-valuemax="100" [ngStyle]="{width:progressBar+'%'}">
+                                        {{ progressBar }}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- row 1 col 2 -->
+                            <div class="col-sm">
+                                <img *ngIf="client?.picture" src="http://localhost:8080/api/img/{{client!.picture}}"
+                                    alt="profile picture" class="img-thumbnail rounded">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="closeModal()" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-
     </div>
 </div>

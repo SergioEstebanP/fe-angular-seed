@@ -1,3 +1,5 @@
+import { Region } from "./region";
+
 export class Client {
   id!: number;
   name: string | undefined;
@@ -5,5 +7,6 @@ export class Client {
   createdAt: string | undefined;
   nextView: string | undefined;
   email: string | undefined;
+  region: Region | undefined;
   picture: string | undefined;
 }

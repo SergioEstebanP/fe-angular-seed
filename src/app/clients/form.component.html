@@ -1,5 +1,5 @@
 <ul class="alert alert-danger" *ngIf="errors!.length > 0">
-    <li *ngFor="let err of errors"> 
+    <li *ngFor="let err of errors">
         {{ err }}
     </li>
 </ul>
@@ -13,7 +13,8 @@
             <div class="form-group row">
                 <label for="name" class="col-form-label col-sm-2">Name</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" [(ngModel)]="client.name" name="name" #name="ngModel"> <!-- required minlength="4" need if we want to validate via FE and not via BE -->
+                    <input type="text" class="form-control" [(ngModel)]="client.name" name="name" #name="ngModel">
+                    <!-- required minlength="4" need if we want to validate via FE and not via BE -->
                     <div class="alert alert-danger" *ngIf="name.invalid && (name.dirty || name.touched)">
                         <div *ngIf="name.errors!.required">
                             Name is mandatory
@@ -29,7 +30,8 @@
             <div class="form-group row">
                 <label for="surname" class="col-form-label col-sm-2">Surname</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" [(ngModel)]="client.surname" name="surname" #surname="ngModel"> <!-- required need if we want to validate via FE and not via BE -->
+                    <input type="text" class="form-control" [(ngModel)]="client.surname" name="surname"
+                        #surname="ngModel"> <!-- required need if we want to validate via FE and not via BE -->
                     <div class="alert alert-danger" *ngIf="surname.invalid && (surname.dirty || surname.touched)">
                         <div *ngIf="surname.errors!.required">
                             Surname is mandatory
@@ -42,7 +44,8 @@
             <div class="form-group row">
                 <label for="email" class="col-form-label col-sm-2">Email</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" [(ngModel)]="client.email" name="email" #email="ngModel"> <!-- required email need if we want to validate via FE and not via BE -->
+                    <input type="text" class="form-control" [(ngModel)]="client.email" name="email" #email="ngModel">
+                    <!-- required email need if we want to validate via FE and not via BE -->
                     <div class="alert alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
                         <div *ngIf="email.errors!.required">
                             Email is mandatory
@@ -58,15 +61,27 @@
             <div class="form-group row">
                 <label for="nextView" class="col-form-label col-sm-2">Next View</label>
                 <div class="col-sm-6">
-                    <input type="date" class="form-control" [(ngModel)]="client.nextView" name="nextView" #nextView="ngModel"> 
+                    <input type="date" class="form-control" [(ngModel)]="client.nextView" name="nextView"
+                        #nextView="ngModel">
+                </div>
+            </div>
+
+            <!-- REGION -->
+            <div class="form-group row">
+                <label for="region" class="col-form-label col-sm-2">Region</label>
+                <div class="col-sm-6">
+                    <select [compareWith]="compareRegion" class="form-control" [(ngModel)]="client.region" name="region">
+                        <option [ngValue]="undefined">Select a region</option>
+                        <option *ngFor="let region of regions" [ngValue]="region">{{ region?.name }}</option>
+                    </select>
                 </div>
             </div>
 
             <!-- BUTTON -->
             <div class="form-group row">
                 <div class="col-sm-6">
-                    <button class="btn btn-primary" role="button" (click)='create()'
-                        *ngIf="!client.id else elseBlock" [disabled]="!createClientForm.form.valid">Create</button>
+                    <button class="btn btn-primary" role="button" (click)='create()' *ngIf="!client.id else elseBlock"
+                        [disabled]="!createClientForm.form.valid">Create</button>
                     <ng-template #elseBlock>
                         <button class="btn btn-primary" role="button" (click)='update()' [disabled]="!createClientForm.form.valid">Update</button>
                     </ng-template>

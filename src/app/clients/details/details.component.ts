@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
 import { Client } from '../client';
 import { ClientService } from '../client.service';
+import { ModalService } from './modal.service';
 import swal from 'sweetalert2';
 import { HttpEventType } from '@angular/common/http';
 
@@ -12,32 +12,22 @@ import { HttpEventType } from '@angular/common/http';
 })
 
 export class DetailsComponent implements OnInit {
-    public client: Client = new Client();
+    @Input() public client: Client | undefined;
     public title: String = 'Client Profile';
     public selectedImage: File | undefined;
     public progressBar: number = 0;
 
     constructor(
-        private router: Router,
         private clientService: ClientService,
-        private activatedRoute: ActivatedRoute
+        public modalService: ModalService
     ) { }
 
-    ngOnInit(): void {
-        this.activatedRoute.paramMap.subscribe(params => {
-            let id = params.get('id') as unknown as number;
-            if (id) {
-                this.clientService.getClient(id).subscribe(client => {
-                    this.client = client;
-                })
-            }
-        });
-    }
+    ngOnInit(): void { }
 
     selectImage(event: any) {
         this.progressBar = 0;
         this.selectedImage = event.target.files[0];
-        console.log(this.selectedImage);
+        // console.log(this.selectedImage);
         if (this.selectedImage!.type.indexOf('image') < 0) {
             swal.fire('Error selecting the image', 'The image should be of type image', 'error');
         } 
@@ -47,7 +37,7 @@ export class DetailsComponent implements OnInit {
         if (!this.selectedImage) {
             swal.fire('Error upload', `You have to select an image`, 'success');
         } else {
-            this.clientService.uploadImage(this.selectedImage!, this.client.id)
+            this.clientService.uploadImage(this.selectedImage!, this.client!.id)
                 .subscribe(event => {
                     // this.client = client;
                     if (event?.type === HttpEventType.UploadProgress) {
@@ -55,10 +45,17 @@ export class DetailsComponent implements OnInit {
                     } else if (event.type === HttpEventType.Response) {
                         let response: any = event.body;
                         this.client = response.client as Client;
+                        this.modalService.uploadNotification.emit(this.client);
                         swal.fire('Image uploaded sucessfully', response.message, 'success');
                     }
                 });
         }
+    }
+
+    closeModal() {
+        this.modalService.closeModal();
+        // this.selectedImage = null;
+        this.progressBar = 0;
     }
 
 }

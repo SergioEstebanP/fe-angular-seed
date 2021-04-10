@@ -1,46 +1,56 @@
+<client-details *ngIf="selectedClient" [client]="selectedClient"></client-details>
+
 <div class="card border-dark mb-3">
-  <div class="card-header">Clients</div>
-  <div class="card-body">
-    <h5 class="card-title">List of clients</h5>
+    <div class="card-header">Clients</div>
+    <div class="card-body">
+        <h5 class="card-title">List of clients</h5>
 
-    <div class="my-2 text-left">
-        <button class="btn btn-dark btn-rounded" type="button" [routerLink] = "['/clients/form']">Create client</button>
+        <div class="my-2 text-left">
+            <button class="btn btn-dark btn-rounded" type="button" [routerLink]="['/clients/form']">Create
+                client</button>
+        </div>
+
+        <div *ngIf="clients!.length==0" class="alert alert-info">
+            There is no clients in the Database
+        </div>
+
+        <table class="table table-bordered table-striped" *ngIf="clients!.length>0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>name</th>
+                    <th>surname</th>
+                    <th>email</th>
+                    <th>date</th>
+                    <th>next view</th>
+                    <th>edit</th>
+                    <th>delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let client of clients">
+                    <td>
+                        <img (click)="openModal(client)" *ngIf="client?.picture" src="http://localhost:8080/api/img/{{client!.picture}}"
+                            alt="profile picture" class="img-thumbnail rounded" style="width: 64px; cursor: pointer;">
+                        <img (click)="openModal(client)" *ngIf="!client?.picture" src="http://localhost:8080/images/generic_not_user.png"
+                            alt="profile picture" class="img-thumbnail rounded" style="width: 64px; cursor: pointer;">
+                    </td>
+                    <td>{{ client.name }}</td>
+                    <td>{{ client.surname }}</td>
+                    <td>{{ client.email }}</td>
+                    <td>{{ client.createdAt}}</td>
+                    <td>{{ client.nextView}}</td>
+                    <td>
+                        <button type="button" name="editar" [routerLink]="['/clients/form', client.id]"
+                            class="btn btn-primary">Edit</button>
+                    </td>
+                    <td>
+                        <button type="button" name="delete" (click)='delete(client)'
+                            class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <paginator-nav *ngIf="paginator" [paginator]="paginator"></paginator-nav>
     </div>
-
-    <div *ngIf="clients!.length==0" class="alert alert-info">
-        There is no clients in the Database
-    </div>
-
-    <table class="table table-bordered table-striped" *ngIf="clients!.length>0">
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>name</th>
-          <th>surname</th>
-          <th>email</th>
-          <th>date</th>
-          <th>next view</th>
-          <th>edit</th>
-          <th>delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let client of clients">
-          <td><button type="button" [routerLink]="['/clients/see', client.id]" class="btn btn-success">{{ client.id }}</button></td>
-          <td>{{ client.name }}</td>
-          <td>{{ client.surname }}</td>
-          <td>{{ client.email }}</td>
-          <td>{{ client.createdAt}}</td>
-          <td>{{ client.nextView}}</td>
-          <td>
-              <button type="button" name="editar" [routerLink] = "['/clients/form', client.id]" class="btn btn-primary">Edit</button>
-          </td>
-          <td>
-              <button type="button" name="delete" (click)='delete(client)' class="btn btn-danger">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <paginator-nav *ngIf="paginator" [paginator]="paginator"></paginator-nav>
-  </div>
 </div>
