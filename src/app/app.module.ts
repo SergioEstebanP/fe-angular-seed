@@ -15,6 +15,7 @@ import { FormComponent } from './clients/form.component'
 import { ClientService } from './clients/client.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DetailsComponent } from './clients/details/details.component';
+import { LoginComponent } from './users/login.component';
 
 
 const routes: Routes = [
@@ -24,7 +25,8 @@ const routes: Routes = [
     { path: 'clients/form', component: FormComponent },
     { path: 'clients/form/:id', component: FormComponent },
     { path: 'clients/see/:id', component: DetailsComponent },
-    { path: 'directives', component: DirectiveComponent }
+    { path: 'directives', component: DirectiveComponent },
+    { path: 'login', component: LoginComponent }
 ]
 
 @NgModule({
@@ -36,7 +38,8 @@ const routes: Routes = [
         ClientsComponent,
         FormComponent,
         PaginatorComponent,
-        DetailsComponent
+        DetailsComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,

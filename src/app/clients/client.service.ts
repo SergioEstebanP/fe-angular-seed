@@ -53,6 +53,10 @@ export class ClientService {
     getClient(id: any): Observable<Client> {
         return this.http.get<Client>(`${this.urlEndpoint}/${id}`).pipe(
             catchError(e => {
+
+                if (this.isNoAuthorized(e)) {
+                    return throwError(e);
+                }
                 this.router.navigate(['/clients'])
                 console.error(e.error.message);
                 Swal.fire('Error editting client', e.error.message, 'error');
@@ -65,6 +69,11 @@ export class ClientService {
         return this.http.post(this.urlEndpoint, client, { headers: this.httpHeaders }).pipe(
             map((response: any) => response.data as Client),
             catchError(e => {
+
+                if (this.isNoAuthorized(e)) {
+                    return throwError(e);
+                }
+
                 if (e.status == 400) {
                     return throwError(e);
                 }
@@ -78,6 +87,10 @@ export class ClientService {
     update(client: Client): Observable<any> {
         return this.http.put<any>(`${this.urlEndpoint}/${client.id}`, client, { headers: this.httpHeaders }).pipe(
             catchError(e => {
+
+                if (this.isNoAuthorized(e)) {
+                    return throwError(e);
+                }
                 if (e.status == 400) {
                     return throwError(e);
                 }
@@ -91,6 +104,9 @@ export class ClientService {
     delete(id: number): Observable<Client> {
         return this.http.delete<Client>(`${this.urlEndpoint}/${id}`, { headers: this.httpHeaders }).pipe(
             catchError(e => {
+                if (this.isNoAuthorized(e)) {
+                    return throwError(e);
+                }
                 console.error(e.error.message);
                 Swal.fire('Error deleting the client', e.error.message, 'error');
                 return throwError(e);
@@ -108,10 +124,28 @@ export class ClientService {
             reportProgress: true
         });
 
-        return this.http.request(request);
+        return this.http.request(request).pipe(
+            catchError(e => {
+                this.isNoAuthorized(e);
+                return throwError(e);
+            })
+        );
     }
 
     getRegions(): Observable<Region[]> {
-        return this.http.get<Region[]>(this.urlEndpoint + '/regions');
+        return this.http.get<Region[]>(this.urlEndpoint + '/regions').pipe(
+            catchError(e => {
+                this.isNoAuthorized(e);
+                return throwError(e);
+            })
+        );
+    }
+
+    private isNoAuthorized(error): boolean {
+        if (error.status == 401 || error.status == 403) {
+            this.router.navigate(['/login']);
+            return true;
+        }
+        return false;
     }
 }
